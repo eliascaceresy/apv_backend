@@ -28,8 +28,22 @@ const veterinarianSchema = new mongoose.Schema({
   confirmed: {
     type: Boolean,
     default: false
+  },
+  created_at: {
+    type: Date,
+    default: Date.now(),
+    required: true,
+    unique: true
+  },
+  updated_at: {
+    type: Date,
+    default: Date.now(),
+    required: true,
+    unique: true
+  },
+  confirmed_at: {
+    type: Date
   }
-
 })
 
 const Veterinarian = mongoose.model('Veterinarian', veterinarianSchema);
