@@ -1,0 +1,19 @@
+{
+  "name": "apv_backend",
+  "version": "1.0.0",
+  "description": "MERN Stack",
+  "license": "ISC",
+  "author": "Elías Cáceres",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.10",
+    "express": "^5.3.0"
+  }
+}
