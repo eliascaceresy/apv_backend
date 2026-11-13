@@ -1,3 +1,4 @@
+import generateJWT from "../utils/jwt.js";
 import generateToken from "../utils/token.js";
 import Veterinarian from './../models/Veterinarian.js';
 
@@ -6,7 +7,8 @@ const indexVeterinarian = (req, res) => {
 }
 
 const veterinarianProfile = (req, res) => {
-  res.json("Desde api veterinarios perfil")
+  const { veterinarian } = req
+  res.json({ profile: veterinarian })
 }
 
 const createVeterinarian = async (req, res) => {
@@ -45,9 +47,33 @@ const confirmVeterinarian = async (req, res) => {
   }
 }
 
+const login = async (req, res) => {
+  const { email, password } = req.body
+
+  const veterinarian = await Veterinarian.findOne({ email })
+  if (!veterinarian) {
+    const error = new Error("Email o contraseña inválidos!")
+    return res.status(403).json({ msg: error.message })
+  }
+
+  if (!veterinarian.confirmed) {
+    const error = new Error("Tu cuenta no ha sido confirmada!")
+    return res.status(403).json({ msg: error.message })
+  }
+
+  if (await veterinarian.checkPassword(password)) {
+    return res.json({ token: generateJWT(veterinarian.id) })
+  } else {
+    const error = new Error("Email o contraseña inválidos!")
+    return res.status(403).json({ msg: error.message })
+  }
+
+}
+
 export {
   indexVeterinarian,
   veterinarianProfile,
   createVeterinarian,
-  confirmVeterinarian
+  confirmVeterinarian,
+  login
 }
