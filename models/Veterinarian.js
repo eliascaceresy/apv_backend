@@ -1,5 +1,5 @@
-import mongoose from "mongoose"
-import generateToken from "../utils/token.js";
+import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const veterinarianSchema = new mongoose.Schema({
   name: {
@@ -47,6 +47,15 @@ const veterinarianSchema = new mongoose.Schema({
     type: String,
     unique: true
   }
+})
+
+veterinarianSchema.pre("save", async function(next) {
+  if(!this.isModified('password')) {
+    next()
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt)
 })
 
 const Veterinarian = mongoose.model('Veterinarian', veterinarianSchema);

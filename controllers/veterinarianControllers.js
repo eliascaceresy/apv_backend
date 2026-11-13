@@ -22,7 +22,6 @@ const createVeterinarian = async (req, res) => {
 
   try {
     const veterinarian = await new Veterinarian({ email, password, name, created_at: Date.now(), updated_at: Date.now(), token: generateToken() })
-    console.log(veterinarian)
     const veterinarianSaved = await veterinarian.save()
     res.status(201).json({ veterinarian: veterinarianSaved })
   } catch (error) {
