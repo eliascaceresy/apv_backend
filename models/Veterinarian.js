@@ -1,4 +1,5 @@
 import mongoose from "mongoose"
+import generateToken from "../utils/token.js";
 
 const veterinarianSchema = new mongoose.Schema({
   name: {
@@ -31,18 +32,20 @@ const veterinarianSchema = new mongoose.Schema({
   },
   created_at: {
     type: Date,
-    default: Date.now(),
     required: true,
     unique: true
   },
   updated_at: {
     type: Date,
-    default: Date.now(),
     required: true,
     unique: true
   },
   confirmed_at: {
     type: Date
+  },
+  token: {
+    type: String,
+    unique: true
   }
 })
 
