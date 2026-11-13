@@ -67,7 +67,60 @@ const login = async (req, res) => {
     const error = new Error("Email o contraseña inválidos!")
     return res.status(403).json({ msg: error.message })
   }
+}
 
+const forgetPassword = async (req, res) => {
+  const { email } = req.body
+  const veterinarian = await Veterinarian.findOne({ email })
+
+  if (veterinarian) {
+    try {
+      veterinarian.token = generateToken()
+      await veterinarian.save()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  res.json({ msg: "Si tu cuenta existe, recibirás un email para cambiar tu contraseña!"})
+}
+const checkTokenChangePassword = async (req, res) => {
+  const { token } = req.params;
+
+  const validToken = await Veterinarian.findOne({ token });
+
+  if (validToken) {
+    res.json({ msg: "Token válido"})
+  } else {
+    const error = new Error("El token es inválido!")
+    res.status(403).json({ msg: error.message })
+  }
+}
+
+const changePassword = async (req, res) => {
+  const { token } = req.params
+  const { password, password_confirmation } = req.body
+
+  const veterinarian = await Veterinarian.findOne({ token })
+
+  if (!veterinarian) {
+    const error = new Error("Hubo un error!")
+    return res.status(401).json({ msg: error.message })
+  }
+
+  if (password !== password_confirmation) {
+     const error = new Error("Las constraseñas no coinciden!")
+    return res.status(401).json({ msg: error.message })
+  }
+
+  try {
+    veterinarian.token = null;
+    veterinarian.password = password
+    await veterinarian.save()
+    return res.status(200).json({ msg: "La contraseña se cambió exitosamente!"})
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export {
@@ -75,5 +128,8 @@ export {
   veterinarianProfile,
   createVeterinarian,
   confirmVeterinarian,
-  login
+  login,
+  forgetPassword,
+  checkTokenChangePassword,
+  changePassword
 }
