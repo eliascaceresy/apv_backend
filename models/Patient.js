@@ -21,6 +21,11 @@ const patientSchema = new mongoose.Schema({
     default: null,
     tirm: true
   },
+  email: {
+    type: String,
+    required: true,
+    trim: true
+  },
   symptoms: {
     type: String,
     required: true,
@@ -28,8 +33,14 @@ const patientSchema = new mongoose.Schema({
   },
   veterinarian_id: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Veterinarian"
-  } 
+    ref: "Veterinarian",
+    required: true
+  },
+  pet_type: {
+    type: String,
+    required: true,
+    trim: true
+  }
 }, {
   timestamps: true
 })

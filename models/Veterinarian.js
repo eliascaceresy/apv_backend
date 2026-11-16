@@ -45,7 +45,6 @@ const veterinarianSchema = new mongoose.Schema({
   },
   token: {
     type: String,
-    unique: true
   }
 })
 
