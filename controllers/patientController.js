@@ -16,7 +16,44 @@ const createPatient = async (req, res) => {
   }
 }
 
+const showPatient = async (req, res) => {
+  try {
+    const patient = await Patient.findById(req.params.id)
+
+    if (patient && patient.veterinarian_id.toString !== req.veterinarian._id.toString) {
+      return res.status(403).json({ msg: "No estás autorizado!"})
+    }
+    res.status(200).json({ patient })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const updatePatient = async (req, res) => {
+  try {
+    const patient = await Patient.findById(req.params.id)
+
+    if (!patient) {
+      return res.status(404).json({ msg: "No encontrado!"})
+    } else if (patient.veterinarian_id.toString !== req.veterinarian._id.toString) {
+      return res.status(403).json({ msg: "No estás autorizado!"})
+    } else {
+      const updatedPatient = await patient.updateOne(req.body)
+      res.status(200).json({ patient: updatedPatient })
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const deletePatient = async (req, res) => {
+  res.json({ msg: "desde delete de paciente" })
+}
+
 export {
   indexPatient,
-  createPatient
+  createPatient,
+  showPatient,
+  updatePatient,
+  deletePatient
 }
