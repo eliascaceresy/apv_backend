@@ -1,6 +1,6 @@
 import generateJWT from "../utils/jwt.js";
 import generateToken from "../utils/token.js";
-import Veterinarian from './../models/Veterinarian.js';
+import Veterinarian from '../models/Veterinarian.js';
 
 const indexVeterinarian = (req, res) => {
   res.json("Desde api veterinarios")

@@ -1,5 +1,5 @@
 import express from "express"
-import { changePassword, checkTokenChangePassword, confirmVeterinarian, createVeterinarian, forgetPassword, indexVeterinarian, login, veterinarianProfile } from "../controllers/veterinarianControllers.js";
+import { changePassword, checkTokenChangePassword, confirmVeterinarian, createVeterinarian, forgetPassword, indexVeterinarian, login, veterinarianProfile } from "../controllers/veterinarianController.js";
 import checkAuthentication from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
