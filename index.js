@@ -1,4 +1,5 @@
 import express from "express"
+import cors from "cors"
 import connectDB from "./config/db.js"
 import veterinarianRoutes from "./routes/veterinarianRoutes.js"
 import patientRoutes from "./routes/patientRoutes.js"
@@ -10,6 +11,19 @@ app.use(express.json());
 
 connectDB();
 
+const enabledDomains = ["http://localhost:5173"]
+
+const corsOptions = {
+  origin: function(origin, callback) {
+    if (enabledDomains.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error("No permitido por CORS"))
+    }
+  }
+}
+
+app.use(cors(corsOptions))
 app.use("/api/veterinarians", veterinarianRoutes);
 app.use("/api/patients", patientRoutes)
 
