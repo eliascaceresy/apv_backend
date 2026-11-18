@@ -1,6 +1,7 @@
 import generateJWT from "../utils/jwt.js";
 import generateToken from "../utils/token.js";
 import Veterinarian from '../models/Veterinarian.js';
+import registerEmail from "../mailers/registerEmail.js";
 
 const indexVeterinarian = (req, res) => {
   res.json("Desde api veterinarios")
@@ -25,6 +26,7 @@ const createVeterinarian = async (req, res) => {
   try {
     const veterinarian = await new Veterinarian({ email, password, name, created_at: Date.now(), updated_at: Date.now(), token: generateToken() })
     const veterinarianSaved = await veterinarian.save()
+    registerEmail(veterinarianSaved)
     res.status(201).json({ veterinarian: veterinarianSaved })
   } catch (error) {
     console.log(error.message)

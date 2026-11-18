@@ -11,11 +11,13 @@ app.use(express.json());
 
 connectDB();
 
-const enabledDomains = ["http://localhost:5173"]
+const enabledDomains = [
+  ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : [])
+]
 
 const corsOptions = {
   origin: function(origin, callback) {
-    if (enabledDomains.indexOf(origin) !== -1) {
+    if (!origin || enabledDomains.includes(origin)) {
       callback(null, true)
     } else {
       callback(new Error("No permitido por CORS"))
