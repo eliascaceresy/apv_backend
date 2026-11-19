@@ -13,7 +13,7 @@ const patientSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    registration_date: {
+    registrationAt: {
       type: Date,
       trim: true,
     },
