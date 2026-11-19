@@ -5,11 +5,11 @@ const veterinarianSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
   },
   password: {
     type: String,
-    required: true
+    required: true,
   },
   email: {
     type: String,
@@ -20,51 +20,51 @@ const veterinarianSchema = new mongoose.Schema({
   phone: {
     type: String,
     default: null,
-    tirm: true
+    tirm: true,
   },
   web: {
     type: String,
-    default: null
+    default: null,
   },
   confirmed: {
     type: Boolean,
-    default: false
+    default: false,
   },
   created_at: {
     type: Date,
     required: true,
-    unique: true
+    unique: true,
   },
   updated_at: {
     type: Date,
     required: true,
-    unique: true
+    unique: true,
   },
   confirmed_at: {
-    type: Date
+    type: Date,
   },
   token: {
     type: String,
-  }
-})
+  },
+});
 
-veterinarianSchema.pre("save", async function() {
+veterinarianSchema.pre("save", async function () {
   if (!this.isModified("password")) {
     return;
   }
 
   const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt)
-})
+  this.password = await bcrypt.hash(this.password, salt);
+});
 
-veterinarianSchema.pre("save", async function() {
+veterinarianSchema.pre("save", async function () {
   this.updated_at = Date.now();
-})
+});
 
-veterinarianSchema.methods.checkPassword = async function(password) {
-  return await bcrypt.compare(password, this.password)
-}
+veterinarianSchema.methods.checkPassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
 
-const Veterinarian = mongoose.model('Veterinarian', veterinarianSchema);
+const Veterinarian = mongoose.model("Veterinarian", veterinarianSchema);
 
 export default Veterinarian;
