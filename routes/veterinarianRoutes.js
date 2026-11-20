@@ -7,6 +7,7 @@ import {
   forgetPassword,
   indexVeterinarian,
   login,
+  updateProfile,
   veterinarianProfile,
 } from "../controllers/veterinarianController.js";
 import checkAuthentication from "../middlewares/authMiddleware.js";
@@ -19,6 +20,7 @@ router.post("/login", login);
 router.post("/forget_password", forgetPassword);
 router.get("/check_token_change_password/:token", checkTokenChangePassword);
 router.post("/change_password/:token", changePassword);
+router.put("/profile/:id", checkAuthentication, updateProfile);
 
 router.get("/", indexVeterinarian);
 router.get("/profile", checkAuthentication, veterinarianProfile);

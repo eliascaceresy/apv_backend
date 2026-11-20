@@ -104,6 +104,7 @@ const forgetPassword = async (req, res) => {
     msg: "Si tu cuenta existe, recibirás un email para cambiar tu contraseña!",
   });
 };
+
 const checkTokenChangePassword = async (req, res) => {
   const { token } = req.params;
 
@@ -145,6 +146,36 @@ const changePassword = async (req, res) => {
   }
 };
 
+const updateProfile = async (req, res) => {
+  const veterinarian = await Veterinarian.findById(req.params.id);
+
+  if (!veterinarian) {
+    const error = new Error("Hubo un error!");
+    return res.status(400).json({ msg: error.message });
+  }
+
+  const { email } = req.body;
+  if (veterinarian.email !== email) {
+    const existEmail = Veterinarian.findOne({ email });
+    if (existEmail) {
+      const error = new Error("Este email ya está en uso!");
+      return res.status(400).json({ msg: error.message });
+    }
+  }
+
+  try {
+    veterinarian.name = req.body.name;
+    veterinarian.web = req.body.web;
+    veterinarian.phone = req.body.phone;
+    veterinarian.email = req.body.email;
+
+    const veterinarianSaved = await veterinarian.save();
+    res.status(200).json({ veterinarian: veterinarianSaved });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export {
   indexVeterinarian,
   veterinarianProfile,
@@ -154,4 +185,5 @@ export {
   forgetPassword,
   checkTokenChangePassword,
   changePassword,
+  updateProfile,
 };
