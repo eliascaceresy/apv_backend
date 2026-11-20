@@ -1,6 +1,7 @@
 import express from "express";
 import {
   changePassword,
+  changeProfilePassword,
   checkTokenChangePassword,
   confirmVeterinarian,
   createVeterinarian,
@@ -20,9 +21,14 @@ router.post("/login", login);
 router.post("/forget_password", forgetPassword);
 router.get("/check_token_change_password/:token", checkTokenChangePassword);
 router.post("/change_password/:token", changePassword);
-router.put("/profile/:id", checkAuthentication, updateProfile);
 
 router.get("/", indexVeterinarian);
 router.get("/profile", checkAuthentication, veterinarianProfile);
+router.put(
+  "/profile/change_profile_password",
+  checkAuthentication,
+  changeProfilePassword,
+);
+router.put("/profile/:id", checkAuthentication, updateProfile);
 
 export default router;

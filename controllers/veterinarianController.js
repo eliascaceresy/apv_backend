@@ -176,6 +176,38 @@ const updateProfile = async (req, res) => {
   }
 };
 
+const changeProfilePassword = async (req, res) => {
+  const { currentPassword, password, passwordConfirmation } = req.body;
+  const { _id } = req.veterinarian;
+
+  const veterinarian = await Veterinarian.findById(_id);
+
+  if (!veterinarian) {
+    const error = new Error("Hubo un error!");
+    return res.status(400).json({ msg: error.message });
+  }
+
+  console.log(currentPassword);
+
+  const correctPassword = await veterinarian.checkPassword(currentPassword);
+  console.log(correctPassword);
+
+  if (!correctPassword) {
+    const error = new Error("La contraseña actual es incorrecta!");
+    return res.status(403).json({ msg: error.message });
+  }
+
+  if (password !== passwordConfirmation) {
+    const error = new Error("Las constraseñas no coinciden!");
+    return res.status(403).json({ msg: error.message });
+  }
+
+  veterinarian.password = password;
+
+  await veterinarian.save();
+  res.status(200).json({ msg: "Contraseña actualizada exitosamente!" });
+};
+
 export {
   indexVeterinarian,
   veterinarianProfile,
@@ -186,4 +218,5 @@ export {
   checkTokenChangePassword,
   changePassword,
   updateProfile,
+  changeProfilePassword,
 };
